@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS hookahmed_db;
+CREATE DATABASE hookahmed_db;
