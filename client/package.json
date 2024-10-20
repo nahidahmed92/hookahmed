@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "node server/index.js",
     "build": "vite build",
     "dev": "vite",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
@@ -12,6 +12,8 @@
   "dependencies": {
     "@apollo/client": "^3.7.14",
     "@react-spring/web": "^9.7.3",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "framer-motion": "^11.3.21",
     "graphql": "^16.6.0",
     "jwt-decode": "^3.1.2",
