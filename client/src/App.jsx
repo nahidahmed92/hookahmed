@@ -15,7 +15,6 @@ import Header from './components/Header.jsx';
 // import Footer from './components/Footer';
 
 import './App.css';
-import './components/UI/Cart.css';
 
 export default function App() {
   return (
