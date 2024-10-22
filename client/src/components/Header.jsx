@@ -1,5 +1,4 @@
 // Header
-import Cart from './UI/Cart.jsx';
 import logo from '../assets/logo.png';
 export default function Header() {
   return (
