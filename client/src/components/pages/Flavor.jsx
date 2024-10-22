@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import QuantitySelector from '../UI/QuantitySelector.jsx';
 
 export default function Flavor() {
   const navigate = useNavigate();
