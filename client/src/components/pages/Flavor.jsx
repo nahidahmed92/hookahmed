@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useCart } from '../UI/CartContext.jsx';
 import logo from '../../assets/logo.png';
 
 export default function Flavor({ currentHookah, setCurrentHookah }) {
   const navigate = useNavigate();
+  const { addToCart, cartItems, updateCartItem } = useCart();
 
   // Array of flavor objects
   const flavors = [
@@ -15,8 +17,32 @@ export default function Flavor({ currentHookah, setCurrentHookah }) {
     return currentHookah.flavors.includes(flavorName);
   };
 
-  const handleAddBtn = () => {
-    // TODO: implement add button functionality here
+  const handleAddBtn = (flavorName) => {
+    let updatedFlavors;
+    if (isFlavorInCart(flavorName)) {
+      // Remove flavor if it's already selected
+      updatedFlavors = currentHookah.flavors.filter((flavor) => flavor !== flavorName);
+    } else {
+      // Add flavor if it's not selected
+      updatedFlavors = [...currentHookah.flavors, flavorName];
+    }
+
+    const updatedHookah = {
+      ...currentHookah,
+      flavors: updatedFlavors,
+      type: 'PendingHookah',
+    };
+
+    // Update currentHookah
+    setCurrentHookah(updatedHookah);
+
+    // Add or update in the cart
+    if (!cartItems.some((item) => item.type === 'PendingHookah')) {
+      addToCart(updatedHookah);
+    } else {
+      // Updates the existing pending hookah in the cart
+      updateCartItem(updatedHookah, 'PendingHookah');
+    }
   };
 
   const handlePrevBtn = () => {
@@ -46,8 +72,10 @@ export default function Flavor({ currentHookah, setCurrentHookah }) {
                   <p className="card-text d-flex justify-content-start">{flavor.description}</p>
                 </div>
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
-                  <button className="btn btn-primary w-25" onClick={handleAddBtn}>
-                    {isFlavorInCart(flavor.name) ? 'Added' : 'Add'}
+                  <button
+                    className="btn btn-primary w-25"
+                    onClick={() => handleAddBtn(flavor.name)}>
+                    {isFlavorInCart(flavor.name) ? 'Remove' : 'Add'}
                   </button>
                 </div>
               </div>
