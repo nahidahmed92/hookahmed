@@ -1,22 +1,25 @@
 import { useNavigate } from 'react-router-dom';
+
+import { useCart } from '../UI/CartContext.jsx';
 import logo from '../../assets/logo.png';
-import QuantitySelector from '../UI/QuantitySelector.jsx';
 
 export default function Drinks() {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
-  const handleAddBtn = () => {
+  const handleAddBtn = (drinkName) => {
     // TODO: implement add button functionality here
+    const item = {
+      name: drinkName,
+      type: 'Drink',
+      quantity: 1, // Adding as a single item
+    };
+    addToCart(item);
   };
 
   const handlePrevBtn = () => {
     navigate('/Menu');
   };
-
-  // const handleAddBtn = () => {
-  //   // navigate('/customizations');
-  //   console.log('Added successfully');
-  // };
 
   return (
     <>
@@ -38,8 +41,9 @@ export default function Drinks() {
                 </p>
               </div>
               <div className="d-flex flex-column align-items-end mx-2">
-                <QuantitySelector />
-                <button className="btn btn-primary mx-2 mt-2" onClick={handleAddBtn}>
+                <button
+                  className="btn btn-primary mx-2 mt-2"
+                  onClick={() => handleAddBtn('Diet Coke')}>
                   Add
                 </button>
               </div>
@@ -59,8 +63,7 @@ export default function Drinks() {
                 </p>
               </div>
               <div className="d-flex flex-column align-items-end mx-2">
-                <QuantitySelector />
-                <button className="btn btn-primary mx-2 mt-2" onClick={handleAddBtn}>
+                <button className="btn btn-primary mx-2 mt-2" onClick={() => handleAddBtn('Coke')}>
                   Add
                 </button>
               </div>
@@ -71,9 +74,6 @@ export default function Drinks() {
       <div className="mt-3">
         <button className="btn btn-primary mx-2" onClick={handlePrevBtn}>
           Previous
-        </button>
-        <button className="btn btn-primary mx-2" onClick={handleAddBtn}>
-          Add to Cart
         </button>
       </div>
     </>
