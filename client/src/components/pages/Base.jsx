@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/logo.png';
 
-export default function Base() {
+export default function Base({ currentHookah, setCurrentHookah }) {
   const navigate = useNavigate();
 
   // Array of base objects
@@ -10,6 +10,11 @@ export default function Base() {
     { name: 'Smoke', description: 'This is where the base description will go.' },
     { name: 'Clear', description: 'This is where the base description will go.' },
   ];
+
+  // Check if base is already selected
+  const isBaseSelected = (baseName) => {
+    return currentHookah.base === baseName;
+  };
 
   const handleAddBtn = () => {
     // TODO: implement add button functionality here
@@ -42,8 +47,11 @@ export default function Base() {
                   <p className="card-text d-flex justify-content-start">{base.description}</p>
                 </div>
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
-                  <button className="btn btn-primary" onClick={handleAddBtn}>
-                    Add
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleAddBtn}
+                    disabled={isBaseSelected(base.name)}>
+                    {isBaseSelected(base.name) ? 'Added' : 'Add'}
                   </button>
                 </div>
               </div>
