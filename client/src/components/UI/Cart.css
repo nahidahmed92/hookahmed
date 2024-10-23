@@ -1,0 +1,29 @@
+.cart-container {
+  position: relative;
+}
+
+.cart-modal {
+  position: fixed;
+  top: 17%;
+  right: 3%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+.cart-modal-content {
+  max-width: 300px;
+}
+
+.cart-modal ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.cart-modal li {
+  display: flex;
+  justify-content: space-between;
+  /* margin-bottom: 8px; */
+}
