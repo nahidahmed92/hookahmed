@@ -8,7 +8,21 @@ export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (item) => {
-    setCartItems([...cartItems, item]);
+    if (item.type === 'Drink') {
+      // Handle drinks with quantity updates
+      const itemIndex = cartItems.findIndex(
+        (cartItem) => cartItem.name === item.name && cartItem.type === item.type
+      );
+      if (itemIndex > -1) {
+        // Item already in the cart, update quantity
+        const newCartItems = [...cartItems];
+        newCartItems[itemIndex].quantity += 1;
+        setCartItems(newCartItems);
+      } else {
+        // Item not in the cart, add as new entry
+        setCartItems([...cartItems, { ...item, quantity: 1 }]);
+      }
+    }
   };
 
   const removeFromCart = (index) => {
