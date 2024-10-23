@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useCart } from '../UI/CartContext.jsx';
 import logo from '../../assets/logo.png';
 
 export default function Base({ currentHookah, setCurrentHookah }) {
   const navigate = useNavigate();
+  const { addToCart, cartItems, updateCartItem } = useCart();
 
   // Array of base objects
   const bases = [
@@ -16,8 +18,23 @@ export default function Base({ currentHookah, setCurrentHookah }) {
     return currentHookah.base === baseName;
   };
 
-  const handleAddBtn = () => {
-    // TODO: implement add button functionality here
+  const handleAddBtn = (baseName) => {
+    const updatedHookah = {
+      ...currentHookah,
+      base: baseName,
+      type: 'PendingHookah',
+    };
+
+    // Update currentHookah
+    setCurrentHookah(updatedHookah);
+
+    // Add or update the pending hookah in the cart
+    if (!cartItems.some((item) => item.type === 'PendingHookah')) {
+      addToCart(updatedHookah);
+    } else {
+      // Update the existing pending hookah in the cart
+      updateCartItem(updatedHookah, 'PendingHookah');
+    }
   };
 
   const handlePrevBtn = () => {
@@ -49,7 +66,7 @@ export default function Base({ currentHookah, setCurrentHookah }) {
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
                   <button
                     className="btn btn-primary"
-                    onClick={handleAddBtn}
+                    onClick={() => handleAddBtn(base.name)}
                     disabled={isBaseSelected(base.name)}>
                     {isBaseSelected(base.name) ? 'Added' : 'Add'}
                   </button>
@@ -59,6 +76,7 @@ export default function Base({ currentHookah, setCurrentHookah }) {
           </div>
         ))}
       </div>
+      {/* Navigation Buttons */}
       <div className="mt-3">
         <button className="btn btn-primary mx-2" onClick={handlePrevBtn}>
           Previous
