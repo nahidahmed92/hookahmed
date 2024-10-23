@@ -26,6 +26,7 @@ export default function Header() {
             <a className="nav-link text-black mx-2" href="#">
               Login
             </a>
+            <Cart />
           </div>
         </div>
       </nav>
