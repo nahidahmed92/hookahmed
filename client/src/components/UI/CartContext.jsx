@@ -41,6 +41,10 @@ export function CartProvider({ children }) {
     }
   };
 
+  const updateCartItem = (updatedItem, type) => {
+    setCartItems((prevItems) => prevItems.map((item) => (item.type === type ? updatedItem : item)));
+  };
+
   const removeFromCart = (index) => {
     setCartItems(cartItems.filter((_, i) => i !== index));
   };
@@ -50,7 +54,8 @@ export function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, updateCartItem, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
