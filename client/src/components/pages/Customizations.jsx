@@ -19,8 +19,6 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
   };
 
   const handleAddBtn = (customizationName) => {
-    // TODO: implement add button functionality here
-    // here it should add the item to the cart and take you back to Menu. If the customer does not want to order anything else they can use the checkout button which now should be selectable
     const updatedHookah = {
       ...currentHookah,
       customizations: [...currentHookah.customizations, customizationName],
@@ -39,8 +37,32 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
     }
   };
 
+  // Function to complete the current hookah order
+  const completeCurrentHookah = () => {
+    addToCart({
+      ...currentHookah,
+      type: 'HookahOrder',
+    });
+
+    // Reset current hookah for the next order
+    setCurrentHookah({
+      flavors: [],
+      hookah: '',
+      base: '',
+      customizations: [],
+    });
+    navigate('/menu');
+  };
+
   const handlePrevBtn = () => {
     navigate('/menu/flavor/hookah/base');
+  };
+
+  // Finalize the hookah order
+  const handleAddToCart = () => {
+    // Add currentHookah to cart and reset currentHookah
+    completeCurrentHookah();
+    navigate('/menu');
   };
 
   return (
@@ -76,11 +98,12 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
           </div>
         ))}
       </div>
+      {/* Navigation and Add to Cart Buttons */}
       <div className="mt-3">
         <button className="btn btn-primary mx-2" onClick={handlePrevBtn}>
           Previous
         </button>
-        <button className="btn btn-primary mx-2" onClick={handleAddBtn}>
+        <button className="btn btn-primary mx-2" onClick={handleAddToCart}>
           Add to Cart
         </button>
       </div>
