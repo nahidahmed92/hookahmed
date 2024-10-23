@@ -1,9 +1,15 @@
 import { useNavigate } from 'react-router-dom';
+
 import logo from '../../assets/logo.png';
-import QuantitySelector from '../UI/QuantitySelector.jsx';
 
 export default function Base() {
   const navigate = useNavigate();
+
+  // Array of base objects
+  const bases = [
+    { name: 'Smoke', description: 'This is where the base description will go.' },
+    { name: 'Clear', description: 'This is where the base description will go.' },
+  ];
 
   const handleAddBtn = () => {
     // TODO: implement add button functionality here
