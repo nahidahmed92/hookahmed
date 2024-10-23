@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useCart } from '../UI/CartContext.jsx';
 import logo from '../../assets/logo.png';
 
 export default function Customizations({ currentHookah, setCurrentHookah }) {
   const navigate = useNavigate();
+  const { addToCart, cartItems, updateCartItem } = useCart();
 
   // Array of customization objects
   const customizations = [
@@ -16,9 +18,25 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
     return currentHookah.customizations.includes(customizationName);
   };
 
-  const handleAddBtn = () => {
+  const handleAddBtn = (customizationName) => {
     // TODO: implement add button functionality here
     // here it should add the item to the cart and take you back to Menu. If the customer does not want to order anything else they can use the checkout button which now should be selectable
+    const updatedHookah = {
+      ...currentHookah,
+      customizations: [...currentHookah.customizations, customizationName],
+      type: 'PendingHookah',
+    };
+
+    // Update currentHookah
+    setCurrentHookah(updatedHookah);
+
+    // Add or update the pending hookah in the cart
+    if (!cartItems.some((item) => item.type === 'PendingHookah')) {
+      addToCart(updatedHookah);
+    } else {
+      // Update the existing pending hookah in the cart
+      updateCartItem(updatedHookah, 'PendingHookah');
+    }
   };
 
   const handlePrevBtn = () => {
@@ -48,7 +66,7 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
                   <button
                     className="btn btn-primary"
-                    onClick={handleAddBtn}
+                    onClick={() => handleAddBtn(customization.name)}
                     disabled={isCustomizationAdded(customization.name)}>
                     {isCustomizationAdded(customization.name) ? 'Added' : 'Add'}
                   </button>
