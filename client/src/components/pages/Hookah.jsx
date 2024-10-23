@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useCart } from '../UI/CartContext.jsx';
 import logo from '../../assets/logo.png';
 
 export default function Hookah({ currentHookah, setCurrentHookah }) {
   const navigate = useNavigate();
+  const { addToCart, cartItems, updateCartItem } = useCart();
 
   // Array of hookah objects
   const hookahs = [
@@ -16,8 +18,23 @@ export default function Hookah({ currentHookah, setCurrentHookah }) {
     return currentHookah.hookah === hookahName;
   };
 
-  const handleAddBtn = () => {
+  const handleAddBtn = (hookahName) => {
     // TODO: implement add button functionality here
+    const updatedHookah = {
+      ...currentHookah,
+      hookah: hookahName,
+      type: 'PendingHookah', // Mark as pending hookah
+    };
+
+    // Update currentHookah
+    setCurrentHookah(updatedHookah);
+
+    // Add or update the pending hookah in the cart
+    if (!cartItems.some((item) => item.type === 'PendingHookah')) {
+      addToCart(updatedHookah);
+    } else {
+      updateCartItem(updatedHookah, 'PendingHookah'); // Update the existing pending hookah in the cart
+    }
   };
 
   const handlePrevBtn = () => {
@@ -47,7 +64,10 @@ export default function Hookah({ currentHookah, setCurrentHookah }) {
                   <p className="card-text d-flex justify-content-start">{hookah.description}</p>
                 </div>
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
-                  <button className="btn btn-primary" onClick={handleAddBtn}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => handleAddBtn(hookah.name)}
+                    disabled={isHookahSelected(hookah.name)}>
                     {isHookahSelected(hookah.name) ? 'Added' : 'Add'}
                   </button>
                 </div>
@@ -56,6 +76,7 @@ export default function Hookah({ currentHookah, setCurrentHookah }) {
           </div>
         ))}
       </div>
+      {/* Navigation Buttons */}
       <div className="mt-3">
         <button className="btn btn-primary mx-2" onClick={handlePrevBtn}>
           Previous
