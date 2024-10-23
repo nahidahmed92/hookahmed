@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/logo.png';
 
-export default function Hookah() {
+export default function Hookah({ currentHookah, setCurrentHookah }) {
   const navigate = useNavigate();
 
   // Array of hookah objects
@@ -10,6 +10,11 @@ export default function Hookah() {
     { name: 'DSH', description: 'This is where the hookah description will go.' },
     { name: 'Matt Pear', description: 'This is where the hookah description will go.' },
   ];
+
+  // Check if hookah is already selected
+  const isHookahSelected = (hookahName) => {
+    return currentHookah.hookah === hookahName;
+  };
 
   const handleAddBtn = () => {
     // TODO: implement add button functionality here
@@ -43,7 +48,7 @@ export default function Hookah() {
                 </div>
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
                   <button className="btn btn-primary" onClick={handleAddBtn}>
-                    Add
+                    {isHookahSelected(hookah.name) ? 'Added' : 'Add'}
                   </button>
                 </div>
               </div>
