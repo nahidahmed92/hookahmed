@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/logo.png';
 
-export default function Customizations() {
+export default function Customizations({ currentHookah, setCurrentHookah }) {
   const navigate = useNavigate();
 
   // Array of customization objects
@@ -10,6 +10,11 @@ export default function Customizations() {
     { name: 'Ice Base', description: 'This is where the customization description will go.' },
     { name: 'Fruit Base', description: 'This is where the customization description will go.' },
   ];
+
+  // Check if customization is already selected
+  const isCustomizationAdded = (customizationName) => {
+    return currentHookah.customizations.includes(customizationName);
+  };
 
   const handleAddBtn = () => {
     // TODO: implement add button functionality here
@@ -41,8 +46,11 @@ export default function Customizations() {
                   </p>
                 </div>
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
-                  <button className="btn btn-primary" onClick={handleAddBtn}>
-                    Add
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleAddBtn}
+                    disabled={isCustomizationAdded(customization.name)}>
+                    {isCustomizationAdded(customization.name) ? 'Added' : 'Add'}
                   </button>
                 </div>
               </div>
