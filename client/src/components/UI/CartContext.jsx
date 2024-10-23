@@ -25,6 +25,19 @@ export function CartProvider({ children }) {
     } else if (item.type === 'HookahOrder') {
       // Add hookah order as a whole without quantity updates
       setCartItems([...cartItems, item]);
+    } else if (item.type === 'PendingHookah') {
+      // Handle PendingHookah separately
+      const itemIndex = cartItems.findIndex((cartItem) => cartItem.type === 'PendingHookah');
+
+      if (itemIndex === -1) {
+        // If no PendingHookah exists, add as a new entry
+        setCartItems([...cartItems, item]);
+      } else {
+        // If PendingHookah exists, update it
+        const newCartItems = [...cartItems];
+        newCartItems[itemIndex] = item; // Replace the old PendingHookah with updated one
+        setCartItems(newCartItems);
+      }
     }
   };
 
