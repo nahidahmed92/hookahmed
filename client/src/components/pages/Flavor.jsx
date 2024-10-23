@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/logo.png';
 
-export default function Flavor() {
+export default function Flavor({ currentHookah, setCurrentHookah }) {
   const navigate = useNavigate();
 
   // Array of flavor objects
@@ -10,6 +10,10 @@ export default function Flavor() {
     { name: 'Peppermint Shake', description: 'This is where the flavor profile will go.' },
     { name: 'Mint', description: 'This is where the flavor profile will go.' },
   ];
+
+  const isFlavorInCart = (flavorName) => {
+    return currentHookah.flavors.includes(flavorName);
+  };
 
   const handleAddBtn = () => {
     // TODO: implement add button functionality here
@@ -43,7 +47,7 @@ export default function Flavor() {
                 </div>
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
                   <button className="btn btn-primary w-25" onClick={handleAddBtn}>
-                    Add
+                    {isFlavorInCart(flavor.name) ? 'Added' : 'Add'}
                   </button>
                 </div>
               </div>
