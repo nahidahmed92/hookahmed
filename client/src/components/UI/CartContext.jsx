@@ -22,6 +22,9 @@ export function CartProvider({ children }) {
         // Item not in the cart, add as new entry
         setCartItems([...cartItems, { ...item, quantity: 1 }]);
       }
+    } else if (item.type === 'HookahOrder') {
+      // Add hookah order as a whole without quantity updates
+      setCartItems([...cartItems, item]);
     }
   };
 
