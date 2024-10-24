@@ -19,7 +19,8 @@ export default function Cart() {
   // Combine pending hookah with hookah orders for display
   const allHookahOrders = [...hookahOrders];
   if (pendingHookah) {
-    allHookahOrders.push(pendingHookah); // Treat pending hookah as a hookah order in the display
+    // Treat pending hookah as a hookah order in the display
+    allHookahOrders.push(pendingHookah);
   }
 
   return (
@@ -29,7 +30,7 @@ export default function Cart() {
       </button>
 
       {isOpen && (
-        <div className="cart-modal mb-0">
+        <div className="cart-modal">
           <div className="cart-modal-content p-3">
             <h3>Your Cart</h3>
             {/* Hookah Orders Section */}
@@ -42,16 +43,20 @@ export default function Cart() {
                       <li className="flex-column text-start">
                         <strong>Flavors:</strong>
                         <ul>
-                          {order.flavors.map((flavor, flavorIndex) => (
-                            <li key={flavorIndex}>- {flavor}</li>
-                          ))}
+                          {order.flavors && order.flavors.length > 0 ? (
+                            order.flavors.map((flavor, flavorIndex) => (
+                              <li key={flavorIndex}>- {flavor}</li>
+                            ))
+                          ) : (
+                            <li>-</li>
+                          )}
                         </ul>
                       </li>
                       <li className="flex-column text-start">
-                        <strong>Base:</strong>- {order.base}
+                        <strong>Hookah:</strong>- {order.hookah}
                       </li>
                       <li className="flex-column text-start">
-                        <strong>Hookah:</strong>- {order.hookah}
+                        <strong>Base:</strong>- {order.base}
                       </li>
                       {/* Here we remove Customization completely */}
                       {/* {order.customizations.length > 0 && ( */}
