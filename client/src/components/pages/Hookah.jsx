@@ -81,7 +81,10 @@ export default function Hookah({ currentHookah, setCurrentHookah }) {
         <button className="btn btn-primary mx-2" onClick={handlePrevBtn}>
           Previous
         </button>
-        <button className="btn btn-primary mx-2" onClick={handleNextBtn}>
+        <button
+          className="btn btn-primary mx-2"
+          disabled={currentHookah.hookah.length === 0}
+          onClick={handleNextBtn}>
           Next
         </button>
       </div>

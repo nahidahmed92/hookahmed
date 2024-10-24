@@ -12,10 +12,12 @@ import Hookah from './components/pages/Hookah.jsx';
 import Base from './components/pages/Base.jsx';
 import Customizations from './components/pages/Customizations.jsx';
 import { CartProvider } from './components/UI/CartContext.jsx';
+import { NavigationProvider } from './components/UI/NavigationContext.jsx';
 import Header from './components/Header.jsx';
 // import Footer from './components/Footer';
 
 import './App.css';
+import './components/UI/Cart.css';
 
 export default function App() {
   // Hookah state that will be passed across pages
@@ -26,10 +28,20 @@ export default function App() {
     customizations: [],
   });
 
+  // Reset function for current hookah
+  const resetCurrentHookah = () => {
+    setCurrentHookah({
+      flavors: [],
+      hookah: '',
+      base: '',
+      customizations: [],
+    });
+  };
+
   return (
-    <>
-      <CartProvider>
-        <Router>
+    <Router>
+      <NavigationProvider>
+        <CartProvider resetCurrentHookah={resetCurrentHookah}>
           <div className="background"></div>
           <Header />
           <div className="content">
@@ -66,8 +78,8 @@ export default function App() {
             </Routes>
           </div>
           {/* <Footer /> */}
-        </Router>
-      </CartProvider>
-    </>
+        </CartProvider>
+      </NavigationProvider>
+    </Router>
   );
 }

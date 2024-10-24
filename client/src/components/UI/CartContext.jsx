@@ -1,11 +1,13 @@
 import { createContext, useState, useContext } from 'react';
+import { useNavigation } from './NavigationContext.jsx';
 
 // Create the context
 const CartContext = createContext();
 
 // Create a provider component
-export function CartProvider({ children }) {
+export function CartProvider({ children, resetCurrentHookah }) {
   const [cartItems, setCartItems] = useState([]);
+  const { navigate } = useNavigation();
 
   const addToCart = (item) => {
     if (item.type === 'Drink') {
@@ -47,10 +49,14 @@ export function CartProvider({ children }) {
 
   const removeFromCart = (index) => {
     setCartItems(cartItems.filter((_, i) => i !== index));
+    resetCurrentHookah();
+    navigate('/menu');
   };
 
   const clearCart = () => {
     setCartItems([]);
+    resetCurrentHookah();
+    navigate('/menu');
   };
 
   return (
