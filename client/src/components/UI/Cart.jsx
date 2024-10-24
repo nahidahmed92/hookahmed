@@ -77,7 +77,7 @@ export default function Cart() {
                     </ul>
                     <button
                       onClick={() => removeFromCart(index)}
-                      className="btn btn-sm btn-outline-danger">
+                      className="btn btn-sm btn-outline-danger mb-2">
                       Remove Hookah #{index + 1}
                     </button>
                   </div>
