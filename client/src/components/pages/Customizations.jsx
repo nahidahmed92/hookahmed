@@ -19,9 +19,20 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
   };
 
   const handleAddBtn = (customizationName) => {
+    let updatedCustomizations;
+    if (isCustomizationAdded(customizationName)) {
+      // Remove flavor if it's already selected
+      updatedCustomizations = currentHookah.customizations.filter(
+        (customization) => customization !== customizationName
+      );
+    } else {
+      // Add flavor if it's not selected
+      updatedCustomizations = [...currentHookah.customizations, customizationName];
+    }
+
     const updatedHookah = {
       ...currentHookah,
-      customizations: [...currentHookah.customizations, customizationName],
+      customizations: updatedCustomizations,
       type: 'PendingHookah',
     };
 
@@ -37,31 +48,32 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
     }
   };
 
-  // Function to complete the current hookah order
-  const completeCurrentHookah = () => {
-    addToCart({
-      ...currentHookah,
-      type: 'HookahOrder',
-    });
-
-    // Reset current hookah for the next order
-    setCurrentHookah({
-      flavors: [],
-      hookah: '',
-      base: '',
-      customizations: [],
-    });
-    navigate('/menu');
-  };
-
   const handlePrevBtn = () => {
     navigate('/menu/flavor/hookah/base');
   };
 
   // Finalize the hookah order
   const handleAddToCart = () => {
-    // Add currentHookah to cart and reset currentHookah
-    completeCurrentHookah();
+    // Finalize the pending hookah and turn it into a HookahOrder
+    const finalizedHookah = {
+      ...currentHookah,
+      // Mark it as a finalized hookah order
+      type: 'HookahOrder',
+    };
+
+    // Update the cart by replacing the pending hookah with the finalized hookah
+    // Replace the PendingHookah with HookahOrder
+    updateCartItem(finalizedHookah, 'PendingHookah');
+
+    // Reset currentHookah for the next hookah order
+    setCurrentHookah({
+      flavors: [],
+      hookah: '',
+      base: '',
+      customizations: [],
+    });
+
+    // Navigate back to the menu
     navigate('/menu');
   };
 
@@ -88,9 +100,8 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
                   <button
                     className="btn btn-primary"
-                    onClick={() => handleAddBtn(customization.name)}
-                    disabled={isCustomizationAdded(customization.name)}>
-                    {isCustomizationAdded(customization.name) ? 'Added' : 'Add'}
+                    onClick={() => handleAddBtn(customization.name)}>
+                    {isCustomizationAdded(customization.name) ? 'Remove' : 'Add'}
                   </button>
                 </div>
               </div>
