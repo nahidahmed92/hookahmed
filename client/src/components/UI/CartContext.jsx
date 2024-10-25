@@ -63,6 +63,7 @@ export function CartProvider({ children, resetCurrentHookah }) {
   const removeFromCart = (index) => {
     setCartItems(cartItems.filter((_, i) => i !== index));
     resetCurrentHookah();
+    localStorage.removeItem('pendingHookah');
     navigate('/menu');
   };
 
@@ -70,8 +71,8 @@ export function CartProvider({ children, resetCurrentHookah }) {
     setCartItems([]);
     resetCurrentHookah();
     // this might night be needed
-    // localStorage.removeItem('cart');
-    // localStorage.removeItem('pendingHookah');
+    localStorage.removeItem('cart');
+    localStorage.removeItem('pendingHookah');
     navigate('/menu');
   };
 
