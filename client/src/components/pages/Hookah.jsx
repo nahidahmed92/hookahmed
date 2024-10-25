@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useCart } from '../UI/CartContext.jsx';
@@ -38,6 +39,13 @@ export default function Hookah({ currentHookah, setCurrentHookah }) {
       updateCartItem(updatedHookah, 'PendingHookah'); // Update the existing pending hookah in the cart
     }
   };
+
+  useEffect(() => {
+    // Redirect if no flavors are selected
+    if (currentHookah.flavors.length === 0) {
+      navigate('/menu/flavor');
+    }
+  }, [currentHookah, navigate]);
 
   const handlePrevBtn = () => {
     navigate('/menu/flavor');
