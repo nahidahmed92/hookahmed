@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigation } from './NavigationContext.jsx';
 
 // Create the context
@@ -6,7 +6,17 @@ const CartContext = createContext();
 
 // Create a provider component
 export function CartProvider({ children, resetCurrentHookah }) {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    // Initialize cart items from localStorage, if available
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  // Update localStorage whenever cartItems change
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const { navigate } = useNavigation();
 
   const addToCart = (item) => {
@@ -37,9 +47,12 @@ export function CartProvider({ children, resetCurrentHookah }) {
       } else {
         // If PendingHookah exists, update it
         const newCartItems = [...cartItems];
-        newCartItems[itemIndex] = item; // Replace the old PendingHookah with updated one
+        // Replace the old PendingHookah with updated one
+        newCartItems[itemIndex] = item;
         setCartItems(newCartItems);
       }
+      // Save PendingHookah separately to localStorage
+      localStorage.setItem('pendingHookah', JSON.stringify(item));
     }
   };
 
@@ -56,6 +69,9 @@ export function CartProvider({ children, resetCurrentHookah }) {
   const clearCart = () => {
     setCartItems([]);
     resetCurrentHookah();
+    // this might night be needed
+    // localStorage.removeItem('cart');
+    // localStorage.removeItem('pendingHookah');
     navigate('/menu');
   };
 
