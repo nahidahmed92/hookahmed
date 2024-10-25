@@ -21,11 +21,11 @@ import './components/UI/Cart.css';
 
 export default function App() {
   // Hookah state that will be passed across pages
-  const [currentHookah, setCurrentHookah] = useState({
-    flavors: [],
-    hookah: '',
-    base: '',
-    customizations: [],
+  const [currentHookah, setCurrentHookah] = useState(() => {
+    const savedPendingHookah = localStorage.getItem('pendingHookah');
+    return savedPendingHookah
+      ? JSON.parse(savedPendingHookah)
+      : { flavors: [], hookah: '', base: '', customizations: [] };
   });
 
   // Reset function for current hookah
