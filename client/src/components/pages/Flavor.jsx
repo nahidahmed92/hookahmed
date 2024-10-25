@@ -35,6 +35,8 @@ export default function Flavor({ currentHookah, setCurrentHookah }) {
 
     // Update currentHookah
     setCurrentHookah(updatedHookah);
+    // Add pending hookah to localStorage
+    localStorage.setItem('pendingHookah', JSON.stringify(updatedHookah));
 
     // Add or update in the cart
     if (!cartItems.some((item) => item.type === 'PendingHookah')) {
