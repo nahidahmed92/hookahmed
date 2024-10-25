@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useCart } from '../UI/CartContext.jsx';
@@ -50,6 +51,21 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
     }
   };
 
+  useEffect(() => {
+    // Redirect if no flavors are selected
+    if (currentHookah.flavors.length === 0) {
+      navigate('/menu/flavor');
+    }
+    // Redirect if no hookah is selected
+    else if (!currentHookah.hookah) {
+      navigate('/menu/flavor/hookah');
+    }
+    // Redirect if no base is selected
+    else if (!currentHookah.base) {
+      navigate('/menu/flavor/hookah/base');
+    }
+  }, [currentHookah, navigate]);
+
   const handlePrevBtn = () => {
     navigate('/menu/flavor/hookah/base');
   };
@@ -74,6 +90,8 @@ export default function Customizations({ currentHookah, setCurrentHookah }) {
       base: '',
       customizations: [],
     });
+
+    localStorage.removeItem('pendingHookah');
 
     // Navigate back to the menu
     navigate('/menu');
