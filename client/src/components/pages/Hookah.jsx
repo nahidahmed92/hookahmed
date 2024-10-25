@@ -28,6 +28,8 @@ export default function Hookah({ currentHookah, setCurrentHookah }) {
 
     // Update currentHookah
     setCurrentHookah(updatedHookah);
+    // Add pending hookah to localStorage
+    localStorage.setItem('pendingHookah', JSON.stringify(updatedHookah));
 
     // Add or update the pending hookah in the cart
     if (!cartItems.some((item) => item.type === 'PendingHookah')) {
