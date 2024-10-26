@@ -61,10 +61,30 @@ export function CartProvider({ children, resetCurrentHookah }) {
   };
 
   const removeFromCart = (index) => {
-    setCartItems(cartItems.filter((_, i) => i !== index));
-    resetCurrentHookah();
-    localStorage.removeItem('pendingHookah');
-    navigate('/menu');
+    const itemToRemove = cartItems[index];
+
+    // Filter out the item from cartItems
+    const updatedCartItems = cartItems.filter((_, i) => i !== index);
+    setCartItems(updatedCartItems);
+
+    if (itemToRemove.type === 'Drink') {
+      setCartItems(updatedCartItems);
+    }
+
+    // If the removed item is PendingHookah, clear from localStorage, reset current hookah
+    if (itemToRemove.type === 'PendingHookah') {
+      localStorage.removeItem('pendingHookah');
+      resetCurrentHookah();
+      navigate('/menu');
+    }
+
+    if (itemToRemove.type === 'HookahOrder') {
+      setCartItems(updatedCartItems);
+    }
+
+    if (updatedCartItems.length === 0) {
+      navigate('/menu');
+    }
   };
 
   const clearCart = () => {
