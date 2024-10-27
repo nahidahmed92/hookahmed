@@ -12,10 +12,10 @@ export default function Home() {
   };
   return (
     <>
-      <h1>HookahMED</h1>
-      <img className="logo" src={logo} />
+      <h1></h1>
+      <img className="logo mt-5" src={logo} />
       <div className="m-3">
-        <button className="btn btn-primary" onClick={handleButtonOrder}>
+        <button className="btn-menu btn btn-primary w-25" onClick={handleButtonOrder}>
           Order Now
         </button>
       </div>

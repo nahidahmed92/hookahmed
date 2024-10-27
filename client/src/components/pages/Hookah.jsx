@@ -71,11 +71,13 @@ export default function Hookah({ currentHookah, setCurrentHookah }) {
                   <h5 className="card-title d-flex justify-content-start align-items-left">
                     {hookah.name}
                   </h5>
-                  <p className="card-text d-flex justify-content-start">{hookah.description}</p>
+                  <p className="card-text d-flex justify-content-start text-start">
+                    {hookah.description}
+                  </p>
                 </div>
                 <div className="d-flex flex-column align-items-end mx-2 mb-2">
                   <button
-                    className="btn btn-primary"
+                    className="btn-add btn btn-primary w-25"
                     onClick={() => handleAddBtn(hookah.name)}
                     disabled={isHookahSelected(hookah.name)}>
                     {isHookahSelected(hookah.name) ? 'Added' : 'Add'}
@@ -88,11 +90,11 @@ export default function Hookah({ currentHookah, setCurrentHookah }) {
       </div>
       {/* Navigation Buttons */}
       <div className="mt-3">
-        <button className="btn btn-primary mx-2" onClick={handlePrevBtn}>
+        <button className="btn-nav btn btn-primary me-2 w-25" onClick={handlePrevBtn}>
           Previous
         </button>
         <button
-          className="btn btn-primary mx-2"
+          className="btn-nav btn btn-primary ms-2 w-25"
           disabled={currentHookah.hookah.length === 0}
           onClick={handleNextBtn}>
           Next

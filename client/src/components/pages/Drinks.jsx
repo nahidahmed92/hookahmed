@@ -45,9 +45,9 @@ export default function Drinks() {
                   </h5>
                   <p className="card-text d-flex justify-content-start">{drink.description}</p>
                 </div>
-                <div className="d-flex flex-column align-items-end mx-2">
+                <div className="d-flex flex-column align-items-end mx-2 mb-2">
                   <button
-                    className="btn btn-primary mx-2 mt-2"
+                    className="btn-add btn btn-primary mx-2 mt-2"
                     onClick={() => handleAddBtn(drink.name)}>
                     Add
                   </button>
@@ -58,7 +58,7 @@ export default function Drinks() {
         ))}
       </div>
       <div className="mt-3">
-        <button className="btn btn-primary mx-2" onClick={handlePrevBtn}>
+        <button className="btn-nav btn btn-primary" onClick={handlePrevBtn}>
           Previous
         </button>
       </div>
