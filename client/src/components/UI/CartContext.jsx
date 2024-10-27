@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+
 import { useNavigation } from './NavigationContext.jsx';
 
 // Create the context
@@ -20,39 +22,31 @@ export function CartProvider({ children, resetCurrentHookah }) {
   const { navigate } = useNavigation();
 
   const addToCart = (item) => {
-    if (item.type === 'Drink') {
+    // Assign unique ID
+    const newItem = { ...item, id: uuid() };
+
+    if (newItem.type === 'Drink') {
       // Handle drinks with quantity updates
       const itemIndex = cartItems.findIndex(
-        (cartItem) => cartItem.name === item.name && cartItem.type === item.type
+        (cartItem) => cartItem.name === newItem.name && cartItem.type === newItem.type
       );
       if (itemIndex > -1) {
-        // Item already in the cart, update quantity
         const newCartItems = [...cartItems];
         newCartItems[itemIndex].quantity += 1;
         setCartItems(newCartItems);
       } else {
-        // Item not in the cart, add as new entry
-        setCartItems([...cartItems, { ...item, quantity: 1 }]);
+        setCartItems([...cartItems, { ...newItem, quantity: 1 }]);
       }
-    } else if (item.type === 'HookahOrder') {
-      // Add hookah order as a whole without quantity updates
-      setCartItems([...cartItems, item]);
-    } else if (item.type === 'PendingHookah') {
-      // Handle PendingHookah separately
-      const itemIndex = cartItems.findIndex((cartItem) => cartItem.type === 'PendingHookah');
-
-      if (itemIndex === -1) {
-        // If no PendingHookah exists, add as a new entry
-        setCartItems([...cartItems, item]);
-      } else {
-        // If PendingHookah exists, update it
+    } else if (newItem.type === 'HookahOrder' || newItem.type === 'PendingHookah') {
+      const itemIndex = cartItems.findIndex((cartItem) => cartItem.type === newItem.type);
+      if (newItem.type === 'PendingHookah' && itemIndex > -1) {
         const newCartItems = [...cartItems];
-        // Replace the old PendingHookah with updated one
-        newCartItems[itemIndex] = item;
+        newCartItems[itemIndex] = newItem;
         setCartItems(newCartItems);
+        localStorage.setItem('pendingHookah', JSON.stringify(newItem));
+      } else {
+        setCartItems([...cartItems, newItem]);
       }
-      // Save PendingHookah separately to localStorage
-      localStorage.setItem('pendingHookah', JSON.stringify(item));
     }
   };
 
@@ -60,32 +54,36 @@ export function CartProvider({ children, resetCurrentHookah }) {
     setCartItems((prevItems) => prevItems.map((item) => (item.type === type ? updatedItem : item)));
   };
 
-  const removeFromCart = (index) => {
-    const itemToRemove = cartItems[index];
+  const removeFromCart = (id) => {
+    const itemToRemove = cartItems.find((item) => item.id === id);
+    const updatedCartItems = cartItems.filter((item) => item.id !== id);
 
-    // Filter out the item from cartItems
-    const updatedCartItems = cartItems.filter((_, i) => i !== index);
-    setCartItems(updatedCartItems);
-
-    if (itemToRemove.type === 'Drink') {
-      setCartItems(updatedCartItems);
-    }
-
-    // If the removed item is PendingHookah, clear from localStorage, reset current hookah
+    // Handle specific logic based on item type
     if (itemToRemove.type === 'PendingHookah') {
       localStorage.removeItem('pendingHookah');
       resetCurrentHookah();
-      navigate('/menu');
+    } else if (itemToRemove.type === 'Drink') {
+      console.log('Drink Removed');
+    } else if (itemToRemove.type === 'HookahOrder') {
+      console.log('Completed Hookah Removed');
     }
 
-    if (itemToRemove.type === 'HookahOrder') {
-      setCartItems(updatedCartItems);
-    }
+    // Update cart items
+    setCartItems(updatedCartItems);
 
+    // Redirect if cart is empty
     if (updatedCartItems.length === 0) {
+      console.log('Cart is Empty');
       navigate('/menu');
     }
   };
+
+  // Set updated cart items
+  // setCartItems(updatedCartItems);
+
+  // if (updatedCartItems.length === 0) {
+  //   navigate('/menu');
+  // }
 
   const clearCart = () => {
     setCartItems([]);

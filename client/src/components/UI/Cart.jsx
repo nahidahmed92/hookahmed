@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { useCart } from './CartContext';
 
 export default function Cart() {
@@ -76,7 +77,7 @@ export default function Cart() {
                       {/* )} */}
                     </ul>
                     <button
-                      onClick={() => removeFromCart(index)}
+                      onClick={() => removeFromCart(order.id)}
                       className="btn btn-sm btn-outline-danger mb-2">
                       Remove Hookah #{index + 1}
                     </button>
@@ -95,7 +96,7 @@ export default function Cart() {
                       className="d-flex justify-content-between align-items-center mb-2">
                       {item.name} - {item.quantity}
                       <button
-                        onClick={() => removeFromCart(index)}
+                        onClick={() => removeFromCart(item.id)}
                         className="btn btn-sm btn-outline-danger mb-1">
                         Remove
                       </button>
