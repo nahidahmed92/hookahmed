@@ -19,7 +19,6 @@ export default function Header() {
             </ul>
           </div>
         </div>
-
         <div className="navbar" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0"></ul>
           <a className="nav-link text-black mx-2" href="#">

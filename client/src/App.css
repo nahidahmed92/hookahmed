@@ -23,3 +23,17 @@
   width: 300px;
   height: 300px;
 }
+
+@media screen and (max-width: 665px) {
+  .btn-menu {
+    width: 50% !important;
+  }
+
+  .btn-add {
+    width: 30% !important;
+  }
+
+  .btn-nav {
+    width: 47% !important;
+  }
+}
